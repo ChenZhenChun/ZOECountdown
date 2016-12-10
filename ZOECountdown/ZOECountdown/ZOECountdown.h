@@ -28,4 +28,6 @@ typedef enum : NSUInteger {
  */
 - (instancetype)initWithTimeOut:(NSInteger)timeOut countdownMode:(CountdownMode)countdownMode timerBlock:(void (^)(NSString *remainTime))countdowning endCountdown:(void (^)())endCountdown;
 
+- (void)removeCountdown;
+
 @end

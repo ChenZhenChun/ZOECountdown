@@ -78,5 +78,9 @@
         _MyEndcountdown();
     });
 }
+    
+- (void)removeCountdown {
+    dispatch_suspend(self.timer);
+}
 
 @end
