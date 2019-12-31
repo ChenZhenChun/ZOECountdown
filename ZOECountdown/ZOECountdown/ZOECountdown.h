@@ -13,6 +13,7 @@ typedef enum : NSUInteger {
     CountdownMode_mm_ss,//mm:ss
     CountdownMode_sss,//sss
     CountdownMode_ss,//ss
+    CountdownMode_longS,//直接显示几秒，前面不补'0'
 } CountdownMode;
 
 @interface ZOECountdown : NSObject
@@ -26,8 +27,12 @@ typedef enum : NSUInteger {
  @param endCountdown 倒计时结束block
  @return 控件实例
  */
-- (instancetype)initWithTimeOut:(NSInteger)timeOut countdownMode:(CountdownMode)countdownMode timerBlock:(void (^)(NSString *remainTime))countdowning endCountdown:(void (^)())endCountdown;
+- (instancetype)initWithTimeOut:(NSInteger)timeOut
+                  countdownMode:(CountdownMode)countdownMode
+                     timerBlock:(void (^)(NSString *remainTime))countdowning
+                   endCountdown:(void (^)(void))endCountdown;
 
+/// 取消倒计时队列
 - (void)removeCountdown;
 
 @end
