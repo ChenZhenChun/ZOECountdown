@@ -104,7 +104,7 @@
 }
 
 - (void)applicationDidBecomeActive {
-    if (self.timeout>=0) {
+    if (self.timeout>=0 && self.timestamp!=0) {
         NSTimeInterval timeInterval = [NSDate date].timeIntervalSince1970-self.timestamp; //进行时间差计算操作
         self.timestamp = 0;
         NSTimeInterval ret = _timeout - timeInterval;
@@ -113,6 +113,7 @@
         } else {
             _timeout = 0;
         }
+        self.timestamp = 0;
         [self startTimer];
     }
 }
