@@ -124,6 +124,7 @@
             dispatch_cancel(_timer);
         }
     }
+    _timer = nil;
 }
 
 @end
