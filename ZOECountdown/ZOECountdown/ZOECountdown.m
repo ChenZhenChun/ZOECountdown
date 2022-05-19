@@ -221,6 +221,7 @@
 }
     
 - (void)removeCountdown {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     if (self.isSuspend) [self startTimer];
     if (_timer){
         if (@available(iOS 8.0, *)) {
