@@ -48,7 +48,8 @@
         _Mycountdowning = countdowning;
         _MyEndcountdown = endCountdown;
         _countdownMode  = countdownMode;
-        [self observeApplicationActionNotification];
+        _observeApplicationActionNotification = YES;
+        [self applicationActionNotification];
         [self startTimer];
     }
     return self;
@@ -67,7 +68,8 @@
         _Mycountdowning = countdowning;
         _MyEndcountdown = endCountdown;
         _countdownMode  = countdownMode;
-        [self observeApplicationActionNotification];
+        _observeApplicationActionNotification = YES;
+        [self applicationActionNotification];
         [self startTimer];
     }
     return self;
@@ -155,8 +157,7 @@
 }
 
 - (void)startTimer {
-    self.isSuspend = NO;
-    dispatch_resume(self.timer);
+    [self resumeTimer];
 }
 
 - (void)endTimer {
@@ -170,17 +171,37 @@
     });
 }
 
-- (void)observeApplicationActionNotification {
+//倒计时挂起
+- (void)suspendTimer {
+    self.isSuspend = YES;
+    dispatch_suspend(_timer);
+}
+
+//恢复倒计时
+- (void)resumeTimer {
+    self.isSuspend = NO;
+    dispatch_resume(self.timer);
+}
+
+- (void)applicationActionNotification {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
 }
 
+- (void)setObserveApplicationActionNotification:(BOOL)observeApplicationActionNotification {
+    _observeApplicationActionNotification = observeApplicationActionNotification;
+    if (_observeApplicationActionNotification) {
+        [self applicationActionNotification];
+    }else {
+        [[NSNotificationCenter defaultCenter] removeObserver:self];
+    }
+}
+
 - (void)applicationDidEnterBackground {
     if (self.timeout>=0) {
         self.timestamp = [NSDate date].timeIntervalSince1970+1;
-        self.isSuspend = YES;
-        dispatch_suspend(_timer);
+        [self suspendTimer];
     }
 }
 

@@ -56,6 +56,16 @@ typedef enum : NSUInteger {
                   timerBlock:(void (^)(NSString *remainTime))countdowning
                 endCountdown:(void (^)(void))endCountdown;
 
+
+/// 退到后台是否挂起倒计时，YES：需要挂起  NO：不挂起 。 默认YES
+@property (nonatomic,assign) BOOL observeApplicationActionNotification;
+
+//倒计时挂起
+- (void)suspendTimer;
+
+//恢复倒计时
+- (void)resumeTimer;
+
 /// 取消倒计时队列
 - (void)removeCountdown;
 
