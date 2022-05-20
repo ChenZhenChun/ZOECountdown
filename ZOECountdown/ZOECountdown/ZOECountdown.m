@@ -50,6 +50,7 @@
         _countdownMode  = countdownMode;
         _observeApplicationActionNotification = YES;
         [self applicationActionNotification];
+        self.isSuspend = YES;
         [self startTimer];
     }
     return self;
@@ -70,6 +71,7 @@
         _countdownMode  = countdownMode;
         _observeApplicationActionNotification = YES;
         [self applicationActionNotification];
+        self.isSuspend = YES;
         [self startTimer];
     }
     return self;
@@ -173,14 +175,18 @@
 
 //倒计时挂起
 - (void)suspendTimer {
-    self.isSuspend = YES;
-    dispatch_suspend(_timer);
+    if (!self.isSuspend) {
+        self.isSuspend = YES;
+        dispatch_suspend(_timer);
+    }
 }
 
 //恢复倒计时
 - (void)resumeTimer {
-    self.isSuspend = NO;
-    dispatch_resume(self.timer);
+    if (self.isSuspend) {
+        self.isSuspend = NO;
+        dispatch_resume(self.timer);
+    }
 }
 
 - (void)applicationActionNotification {
